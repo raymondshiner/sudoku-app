@@ -22,18 +22,28 @@ const Matrix: React.FC = () => {
         setMatrixData(updatedMatrix); // Update the state with the new matrix data
     };
 
+
     return (
         <StyledTableWrapper>
             {matrixData.map((row, rowIndex) => {
-                return <StyledRowWrapper key={rowIndex}>
-                    {row.map((cellValue, columnIndex) => (
-                        <StyledCell
-                            key={columnIndex}
-                            onClick={() => handleCellValueUpdate(rowIndex, columnIndex, cellValue + 1)}
+                return <StyledRowWrapper key={`row-${rowIndex}`}>
+
+                    {row.map((cellValue, columnIndex) => {
+                        const incrementValue = () => handleCellValueUpdate(rowIndex, columnIndex, cellValue + 1);
+                        const decrementValue = (event: React.MouseEvent<HTMLButtonElement>) => {
+                            event.preventDefault();
+                            handleCellValueUpdate(rowIndex, columnIndex, cellValue - 1);
+                        }
+
+                        return <StyledCell
+                            key={`column-${columnIndex}`}
+                            onClick={incrementValue}
+                            onContextMenu={decrementValue}
                         >
                             {cellValue}
                         </StyledCell>
-                    ))}
+                    }
+                    )}
                 </StyledRowWrapper>
             }
             )}
